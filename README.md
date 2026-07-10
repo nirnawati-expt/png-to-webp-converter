@@ -54,4 +54,4 @@ Then navigate to `http://localhost:8080` in your browser.
 - **Info/Success**: `#00ccff`
 
 ## 📝 License
-This project is open-source and free to use.
+This project is open-source and free to use for non commercial usage. see [LICENSE](/LICENSE) for details.
