@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal PNG to WebP Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="prompt">user@host:~$</span> ./png2webp.sh<span class="cursor">_</span></h1>
+            <p>Convert PNG to WebP locally. 100% Client-side.</p>
+        </header>
+
+        <main>
+            <div id="drop-zone" class="drop-zone">
+                <input type="file" id="file-input" accept="image/png">
+                <label for="file-input" id="drop-label">
+                    [ DRAG & DROP PNG HERE OR CLICK TO BROWSE ]
+                </label>
+            </div>
+
+            <div id="error-message" class="error-message hidden">
+                <span class="prompt">Error:</span> Invalid file format. Expected image/png.
+            </div>
+
+            <div id="preview-section" class="preview-section hidden">
+                <div class="image-box">
+                    <h2>--- SOURCE: PNG ---</h2>
+                    <div class="img-container">
+                        <img id="source-img" alt="Source PNG preview">
+                    </div>
+                    <div class="stats">
+                        <span>Size: <span id="png-size">0 KB</span></span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="convert-btn" class="btn primary">
+                        > CONVERT TO WEBP
+                    </button>
+                </div>
+
+                <div id="result-box" class="image-box hidden">
+                    <h2>--- RESULT: WEBP ---</h2>
+                    <div class="img-container">
+                        <img id="result-img" alt="Result WebP preview">
+                    </div>
+                    <div class="stats">
+                        <span>Size: <span id="webp-size">0 KB</span></span>
+                        <span class="reduction" id="size-reduction">(-0%)</span>
+                    </div>
+                    <div class="actions">
+                        <button id="download-btn" class="btn success">
+                            > DOWNLOAD .WEBP
+                        </button>
+                        <button id="refresh-btn" class="btn danger hidden">
+                            ↻ START OVER
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Hidden canvas for conversion -->
+    <canvas id="canvas" style="display: none;"></canvas>
+    
+    <script src="script.js"></script>
+</body>
+</html>
