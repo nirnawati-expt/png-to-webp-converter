@@ -180,9 +180,8 @@ img {
 }
 
 .btn.danger {
-    color: #ffffff;
+    color: #ff3333;
     border-color: #ff3333;
-    background-color: #aa0000;
     margin-left: 1rem;
 }
 
