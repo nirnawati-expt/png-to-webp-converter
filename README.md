@@ -11,7 +11,8 @@ A lightweight, 100% client-side web application for converting PNG images to Web
 - **Built-in Constraints**: Safely handles up to 50 files or 50 MB in total size per batch, preventing browser crashes. Limits are enforced via retro-styled terminal modals.
 - **Smart ZIP Downloads**: When converting multiple files, the app automatically bundles all converted WebP images into a single `.zip` archive for easy downloading.
 - **Terminal-Inspired UI**: A high-contrast design featuring a true black background (`#0a0a0a`), vibrant green text (`#00ff00`), blinking cursor animations, and monospace typography.
-- **Drag & Drop Support**: Easily upload your PNG files by clicking the upload area or dragging and dropping files directly into the browser window.
+- **Drag & Drop Support**: Easily upload your PNG files by clicking the upload area or dragging and dropping files directly into the browser window. Each new upload **appends** to the existing queue — files already in the list are never replaced.
+- **Editable File Queue**: Remove individual files from the queue before conversion using the `[ X ]` button next to each file. The queue is re-validated against the 50-file / 50 MB limits on every append.
 - **Live Preview & Stats**: Instantly view your uploaded files, track real-time status indicators during bulk conversion, and see the exact bandwidth saved.
 
 ## 🛠️ Tech Stack
