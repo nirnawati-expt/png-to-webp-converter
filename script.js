@@ -2,22 +2,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const dropLabel = document.getElementById('drop-label');
-    const errorMessage = document.getElementById('error-message');
     const previewSection = document.getElementById('preview-section');
-    const sourceImg = document.getElementById('source-img');
-    const pngSizeSpan = document.getElementById('png-size');
+    const fileListContainer = document.getElementById('file-list');
+    const totalPngSizeSpan = document.getElementById('total-png-size');
     const convertBtn = document.getElementById('convert-btn');
     const resultBox = document.getElementById('result-box');
-    const resultImg = document.getElementById('result-img');
-    const webpSizeSpan = document.getElementById('webp-size');
-    const sizeReductionSpan = document.getElementById('size-reduction');
+    const totalWebpSizeSpan = document.getElementById('total-webp-size');
+    const totalReductionSpan = document.getElementById('total-reduction');
     const downloadBtn = document.getElementById('download-btn');
     const refreshBtn = document.getElementById('refresh-btn');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    let currentFile = null;
-    let webpBlobURL = null;
+    const errorModal = document.getElementById('error-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const modalOkBtn = document.getElementById('modal-ok-btn');
+
+    let selectedFiles = [];
+    let convertedBlobs = []; // { name, blob, originalSize }
+    
+    // Constants
+    const MAX_FILES = 50;
+    const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
+
+    function showError(msg) {
+        modalMessage.textContent = msg;
+        errorModal.classList.remove('hidden');
+    }
+
+    modalOkBtn.addEventListener('click', () => {
+        errorModal.classList.add('hidden');
+    });
 
     // Drag and Drop Events
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -43,108 +58,180 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dropZone.addEventListener('drop', (e) => {
         const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
+        handleFiles(dt.files);
     }, false);
 
     fileInput.addEventListener('change', function() {
         handleFiles(this.files);
     });
 
-    function handleFiles(files) {
-        if (files.length === 0) return;
+    function handleFiles(filesList) {
+        if (filesList.length === 0) return;
         
-        const file = files[0];
+        let files = Array.from(filesList).filter(f => f.type === 'image/png');
         
-        // Reset state
-        errorMessage.classList.add('hidden');
-        previewSection.classList.add('hidden');
-        resultBox.classList.add('hidden');
-        
-        if (webpBlobURL) {
-            URL.revokeObjectURL(webpBlobURL);
-            webpBlobURL = null;
-        }
-
-        // Validate file type
-        if (file.type !== 'image/png') {
-            errorMessage.classList.remove('hidden');
+        if (files.length === 0) {
+            showError("No valid PNG files found in selection.");
             return;
         }
 
-        currentFile = file;
+        // Check limits
+        if (files.length > MAX_FILES) {
+            showError(`Limit exceeded: You selected ${files.length} files. Maximum is ${MAX_FILES}.`);
+            fileInput.value = ''; // reset input
+            return;
+        }
+
+        let totalSize = files.reduce((acc, f) => acc + f.size, 0);
+        if (totalSize > MAX_SIZE_BYTES) {
+            showError(`Limit exceeded: Total size is ${formatBytes(totalSize)}. Maximum is 50 MB.`);
+            fileInput.value = '';
+            return;
+        }
+
+        // Accept files
+        selectedFiles = files;
+        convertedBlobs = [];
         
-        // Show source preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            sourceImg.src = e.target.result;
-            pngSizeSpan.textContent = formatBytes(file.size);
-            previewSection.classList.remove('hidden');
-            dropLabel.textContent = `[ SELECTED: ${file.name} ]`;
-        };
-        reader.readAsDataURL(file);
+        // Reset UI
+        resultBox.classList.add('hidden');
+        previewSection.classList.remove('hidden');
+        dropLabel.textContent = `[ SELECTED: ${files.length} FILE(S) ]`;
+        totalPngSizeSpan.textContent = formatBytes(totalSize);
+
+        // Render file list
+        fileListContainer.innerHTML = '';
+        files.forEach((f, idx) => {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.innerHTML = `
+                <span class="file-name">> ${f.name}</span>
+                <span class="file-status wait" id="status-${idx}">[ WAIT ]</span>
+            `;
+            fileListContainer.appendChild(div);
+        });
+
+        // Update button text
+        downloadBtn.textContent = files.length > 1 ? "> DOWNLOAD ALL (.zip)" : "> DOWNLOAD .WEBP";
     }
 
-    convertBtn.addEventListener('click', () => {
-        if (!currentFile || !sourceImg.complete) return;
+    convertBtn.addEventListener('click', async () => {
+        if (selectedFiles.length === 0) return;
+        
+        convertBtn.disabled = true;
+        convertBtn.textContent = "> CONVERTING...";
+        
+        convertedBlobs = [];
+        let totalWebpSize = 0;
+        let totalOriginalSize = selectedFiles.reduce((acc, f) => acc + f.size, 0);
 
-        // Set canvas dimensions to match image
-        canvas.width = sourceImg.naturalWidth;
-        canvas.height = sourceImg.naturalHeight;
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            const statusEl = document.getElementById(`status-${i}`);
+            statusEl.textContent = '[ RUNNING ]';
+            statusEl.style.color = '#fff';
 
-        // Draw image to canvas
-        ctx.drawImage(sourceImg, 0, 0);
-
-        // Convert to WebP
-        canvas.toBlob((blob) => {
-            if (!blob) {
-                console.error("Canvas toBlob failed");
-                return;
+            try {
+                const blob = await convertToWebP(file);
+                convertedBlobs.push({
+                    name: file.name.replace(/\.png$/i, '.webp'),
+                    blob: blob
+                });
+                totalWebpSize += blob.size;
+                
+                statusEl.textContent = '[ OK ]';
+                statusEl.className = 'file-status ok';
+            } catch (err) {
+                console.error(err);
+                statusEl.textContent = '[ ERROR ]';
+                statusEl.className = 'file-status error';
+                statusEl.style.color = '#ff3333';
             }
+        }
 
-            if (webpBlobURL) {
-                URL.revokeObjectURL(webpBlobURL);
-            }
+        // Show results
+        totalWebpSizeSpan.textContent = formatBytes(totalWebpSize);
+        const reduction = ((totalOriginalSize - totalWebpSize) / totalOriginalSize * 100).toFixed(1);
+        if (reduction > 0) {
+            totalReductionSpan.textContent = `(-${reduction}%)`;
+            totalReductionSpan.style.color = '#00ff00';
+        } else {
+            totalReductionSpan.textContent = `(+${Math.abs(reduction)}%)`;
+            totalReductionSpan.style.color = '#ff3333';
+        }
 
-            webpBlobURL = URL.createObjectURL(blob);
-            resultImg.src = webpBlobURL;
-            webpSizeSpan.textContent = formatBytes(blob.size);
-
-            // Calculate reduction
-            const reduction = ((currentFile.size - blob.size) / currentFile.size * 100).toFixed(1);
-            if (reduction > 0) {
-                sizeReductionSpan.textContent = `(-${reduction}%)`;
-                sizeReductionSpan.style.color = '#00ff00';
-            } else {
-                sizeReductionSpan.textContent = `(+${Math.abs(reduction)}%)`;
-                sizeReductionSpan.style.color = '#ff3333';
-            }
-
-            resultBox.classList.remove('hidden');
-            
-            // Scroll to result
-            resultBox.scrollIntoView({ behavior: 'smooth' });
-
-        }, 'image/webp', 0.8); // 0.8 is quality
+        resultBox.classList.remove('hidden');
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+        
+        convertBtn.disabled = false;
+        convertBtn.textContent = "> CONVERT TO WEBP";
+        refreshBtn.classList.remove('hidden');
     });
 
-    downloadBtn.addEventListener('click', () => {
-        if (!webpBlobURL) return;
+    function convertToWebP(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob((blob) => {
+                        if (blob) resolve(blob);
+                        else reject(new Error("Canvas toBlob failed"));
+                    }, 'image/webp', 0.8);
+                };
+                img.onerror = () => reject(new Error("Image load failed"));
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject(new Error("File read failed"));
+            reader.readAsDataURL(file);
+        });
+    }
 
-        const a = document.createElement('a');
-        a.href = webpBlobURL;
-        
-        // Create filename based on original
-        const originalName = currentFile.name;
-        const newName = originalName.replace(/\.png$/i, '.webp');
-        a.download = newName || 'converted.webp';
-        
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    downloadBtn.addEventListener('click', async () => {
+        if (convertedBlobs.length === 0) return;
 
-        // Show refresh button after download
-        refreshBtn.classList.remove('hidden');
+        if (convertedBlobs.length === 1) {
+            // Single download
+            const blobInfo = convertedBlobs[0];
+            const url = URL.createObjectURL(blobInfo.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = blobInfo.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } else {
+            // Zip download
+            downloadBtn.textContent = "> ZIPPING...";
+            downloadBtn.disabled = true;
+            
+            try {
+                const zip = new JSZip();
+                convertedBlobs.forEach(b => {
+                    zip.file(b.name, b.blob);
+                });
+                
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted_images.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                showError("Failed to generate ZIP file.");
+                console.error(err);
+            }
+            
+            downloadBtn.textContent = "> DOWNLOAD ALL (.zip)";
+            downloadBtn.disabled = false;
+        }
     });
 
     refreshBtn.addEventListener('click', () => {

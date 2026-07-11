@@ -17,50 +17,39 @@
         </header>
 
         <main>
+            <div class="tip-box">
+                <span class="prompt">Tip:</span> You can convert a single PNG or process in bulk (Max 50 files / 50MB).
+            </div>
+
             <div id="drop-zone" class="drop-zone">
-                <input type="file" id="file-input" accept="image/png">
+                <input type="file" id="file-input" accept="image/png" multiple>
                 <label for="file-input" id="drop-label">
-                    [ DRAG & DROP PNG HERE OR CLICK TO BROWSE ]
+                    [ DRAG & DROP PNGs HERE OR CLICK TO BROWSE ]
                 </label>
             </div>
 
-            <div id="error-message" class="error-message hidden">
-                <span class="prompt">Error:</span> Invalid file format. Expected image/png.
-            </div>
-
             <div id="preview-section" class="preview-section hidden">
-                <div class="image-box">
-                    <h2>--- SOURCE: PNG ---</h2>
-                    <div class="img-container">
-                        <img id="source-img" alt="Source PNG preview">
-                    </div>
+                <div class="list-box">
+                    <h2>--- SELECTED FILES ---</h2>
+                    <div id="file-list" class="file-list"></div>
                     <div class="stats">
-                        <span>Size: <span id="png-size">0 KB</span></span>
+                        <span>Total Size: <span id="total-png-size">0 KB</span></span>
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button id="convert-btn" class="btn primary">
-                        > CONVERT TO WEBP
-                    </button>
+                    <button id="convert-btn" class="btn primary">> CONVERT TO WEBP</button>
                 </div>
 
-                <div id="result-box" class="image-box hidden">
-                    <h2>--- RESULT: WEBP ---</h2>
-                    <div class="img-container">
-                        <img id="result-img" alt="Result WebP preview">
-                    </div>
+                <div id="result-box" class="list-box hidden">
+                    <h2>--- RESULTS ---</h2>
                     <div class="stats">
-                        <span>Size: <span id="webp-size">0 KB</span></span>
-                        <span class="reduction" id="size-reduction">(-0%)</span>
+                        <span>Converted Size: <span id="total-webp-size">0 KB</span></span>
+                        <span class="reduction" id="total-reduction"></span>
                     </div>
                     <div class="actions">
-                        <button id="download-btn" class="btn success">
-                            > DOWNLOAD .WEBP
-                        </button>
-                        <button id="refresh-btn" class="btn danger hidden">
-                            ↻ START OVER
-                        </button>
+                        <button id="download-btn" class="btn success">> DOWNLOAD</button>
+                        <button id="refresh-btn" class="btn danger hidden">↻ START OVER</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +58,21 @@
     
     <!-- Hidden canvas for conversion -->
     <canvas id="canvas" style="display: none;"></canvas>
+
+    <!-- Error Modal Popup -->
+    <div id="error-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="prompt">system@error:~$</span> LIMIT_EXCEEDED
+            </div>
+            <div id="modal-message" class="modal-body error-text"></div>
+            <div class="modal-actions">
+                <button id="modal-ok-btn" class="btn primary">> ACKNOWLEDGE</button>
+            </div>
+        </div>
+    </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
