@@ -1,6 +1,6 @@
 ---
 name: semantic-git
-description: Automatically generate semantic commits and structured PR descriptions (What/Why/Testing/Breaking Changes) based on changed files. Auto-detects type and scope, checks for merge conflicts, and handles the push/PR flow. Triggers on 'commit', 'create PR', 'push', etc.
+description: Automatically generate semantic commits and structured PR descriptions (What/Why/Testing/Breaking Changes) based on changed files. Triggers on 'commit', 'create PR', 'push', etc.
 ---
 
 # Semantic Git
@@ -8,14 +8,14 @@ description: Automatically generate semantic commits and structured PR descripti
 Automate semantic commits and professional pull requests.
 
 ## Core Workflow
-1. **Commit:** Generate semantic message and create commit.
-2. **Pull & Check:** Pull from `main` and detect merge conflicts.
-3. **Push & PR:** If clean, push and generate PR; if conflicted, halt and report.
+1. Commit: Generate semantic message and create commit.
+2. Pull & Check: Pull from `main` and detect merge conflicts.
+3. Push & PR: If clean, push and generate PR; if conflicted, halt and report.
 
 ## Auto-Detection (Priority Order)
-*   **Type:** `test` (e.g., `.test.js`) → `docs` (`docs/`, `README.md`) → `chore` (`package.json`) → `fix` (contains "fix/bug/error") → `feat` (contains "new/add") → Mostly deletions (`refactor`) / Mostly additions (`feat`) → Default: `refactor`.
-*   **Scope:** Top-level folder with the highest number of changed files. Skip if changes are scattered or repository-wide.
-*   **Format:** `type(scope): description <50 chars` (plus an optional body if needed).
+*   Type: `test` (e.g., `.test.js`) → `docs` (`docs/`, `README.md`) → `chore` (`package.json`) → `fix` (contains "fix/bug/error") → `feat` (contains "new/add") → Mostly deletions (`refactor`) / Mostly additions (`feat`) → Default: `refactor`.
+*   Scope: Top-level folder with the highest number of changed files. Skip if changes are scattered or repository-wide.
+*   Format: `type(scope): description <50 chars` (plus an optional body if needed).
 
 ## Pull Request Template
 ```markdown
