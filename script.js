@@ -75,14 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        let combinedFiles = selectedFiles.concat(files);
+
         // Check limits
-        if (files.length > MAX_FILES) {
-            showError(`Limit exceeded: You selected ${files.length} files. Maximum is ${MAX_FILES}.`);
+        if (combinedFiles.length > MAX_FILES) {
+            showError(`Limit exceeded: You selected ${combinedFiles.length} files. Maximum is ${MAX_FILES}.`);
             fileInput.value = ''; // reset input
             return;
         }
 
-        let totalSize = files.reduce((acc, f) => acc + f.size, 0);
+        let totalSize = combinedFiles.reduce((acc, f) => acc + f.size, 0);
         if (totalSize > MAX_SIZE_BYTES) {
             showError(`Limit exceeded: Total size is ${formatBytes(totalSize)}. Maximum is 50 MB.`);
             fileInput.value = '';
@@ -90,29 +92,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Accept files
-        selectedFiles = files;
+        selectedFiles = combinedFiles;
         convertedBlobs = [];
+        fileInput.value = ''; // reset so same files can be re-added after removal
         
+        renderFileList();
+    }
+
+    function renderFileList() {
+        if (selectedFiles.length === 0) {
+            previewSection.classList.add('hidden');
+            resultBox.classList.add('hidden');
+            dropLabel.textContent = `[ DRAG & DROP PNGs HERE OR CLICK TO BROWSE ]`;
+            totalPngSizeSpan.textContent = '0 KB';
+            return;
+        }
+
+        let totalSize = selectedFiles.reduce((acc, f) => acc + f.size, 0);
+
         // Reset UI
         resultBox.classList.add('hidden');
         previewSection.classList.remove('hidden');
-        dropLabel.textContent = `[ SELECTED: ${files.length} FILE(S) ]`;
+        dropLabel.textContent = `[ SELECTED: ${selectedFiles.length} FILE(S) ]`;
         totalPngSizeSpan.textContent = formatBytes(totalSize);
 
         // Render file list
         fileListContainer.innerHTML = '';
-        files.forEach((f, idx) => {
+        selectedFiles.forEach((f, idx) => {
             const div = document.createElement('div');
             div.className = 'file-item';
-            div.innerHTML = `
-                <span class="file-name">> ${f.name}</span>
-                <span class="file-status wait" id="status-${idx}">[ WAIT ]</span>
-            `;
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'file-name';
+            nameSpan.textContent = `> ${f.name}`;
+            
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'file-status remove-btn';
+            statusSpan.id = `status-${idx}`;
+            statusSpan.textContent = '[ X ]';
+            statusSpan.addEventListener('click', () => {
+                if (!convertBtn.disabled) {
+                    selectedFiles.splice(idx, 1);
+                    renderFileList();
+                }
+            });
+
+            div.appendChild(nameSpan);
+            div.appendChild(statusSpan);
             fileListContainer.appendChild(div);
         });
 
         // Update button text
-        downloadBtn.textContent = files.length > 1 ? "> DOWNLOAD ALL (.zip)" : "> DOWNLOAD .WEBP";
+        downloadBtn.textContent = selectedFiles.length > 1 ? "> DOWNLOAD ALL (.zip)" : "> DOWNLOAD .WEBP";
     }
 
     convertBtn.addEventListener('click', async () => {
