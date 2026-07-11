@@ -14,6 +14,7 @@ A lightweight, 100% client-side web application for converting PNG images to Web
 - **Drag & Drop Support**: Easily upload your PNG files by clicking the upload area or dragging and dropping files directly into the browser window. Each new upload **appends** to the existing queue — files already in the list are never replaced.
 - **Editable File Queue**: Remove individual files from the queue before conversion using the `[ X ]` button next to each file. The queue is re-validated against the 50-file / 50 MB limits on every append.
 - **Live Preview & Stats**: Instantly view your uploaded files, track real-time status indicators during bulk conversion, and see the exact bandwidth saved.
+- **One-Shot Conversion Lock**: Once you click `> CONVERT TO WEBP`, both the convert button and the file input (including drag & drop) are locked for the rest of the session — preventing accidental re-submissions. Click `↻ START OVER` to reload the page and start fresh.
 
 ## 🛠️ Tech Stack
 

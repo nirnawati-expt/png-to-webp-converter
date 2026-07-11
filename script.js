@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedFiles = [];
     let convertedBlobs = []; // { name, blob, originalSize }
+    let isLocked = false; // true once conversion starts; reset only on page reload
     
     // Constants
     const MAX_FILES = 50;
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleFiles(filesList) {
+        if (isLocked) return; // block both drop and input once conversion starts
         if (filesList.length === 0) return;
         
         let files = Array.from(filesList).filter(f => f.type === 'image/png');
@@ -149,7 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     convertBtn.addEventListener('click', async () => {
         if (selectedFiles.length === 0) return;
         
+        isLocked = true;
         convertBtn.disabled = true;
+        fileInput.disabled = true;
         convertBtn.textContent = "> CONVERTING...";
         
         convertedBlobs = [];
@@ -194,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultBox.classList.remove('hidden');
         resultBox.scrollIntoView({ behavior: 'smooth' });
         
-        convertBtn.disabled = false;
+        // convertBtn and fileInput remain disabled — user must refresh to start over
         convertBtn.textContent = "> CONVERT TO WEBP";
         refreshBtn.classList.remove('hidden');
     });
