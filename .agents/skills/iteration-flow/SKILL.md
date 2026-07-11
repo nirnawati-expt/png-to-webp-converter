@@ -1,0 +1,63 @@
+---
+name: atomic-iteration
+description: Manage structured development iterations with a systematic workflow. Executes atomic, broken-down changes via branch-based iterations.
+---
+
+# Atomic Iteration
+
+Structured development workflow for systematic, flexible changes.
+
+## Core Workflow
+1. **Init Branch:** Name & create iteration branch.
+2. **Context:** Clarify goal & identify relevant files.
+3. **Plan:** Draft implementation plan with open questions.
+4. **Approve:** Iterate plan with user until "OK".
+5. **Save:** Save plan to markdown & commit.
+6. **Execute:** Create and run tasks sequentially upon approval.
+7. **Finalize:** Commit, push, create PR, and summarize.
+
+## 1. Branch Initialization
+**Trigger:** New chat for project work.
+*   **Naming Priority:** 
+    1. User mentions iteration/phase → `iteration-[number]` (e.g., phase 2 → `iteration-2`).
+    2. Project name exists → Use `project-name` if clean; otherwise increment (`project-name-2`).
+    3. Missing info → Ask user for project name/iteration.
+*   **Action:** Run `git fetch origin main && git checkout -b [branch-name] origin/main` and confirm readiness.
+
+## 2. Gather Context & Goal
+**Trigger:** Branch is ready.
+*   **Goal:** Ask for a 1-2 sentence main goal if unclear. *Wait for response.*
+*   **Files:** Ask for target files. If unknown, scan project (`find . -type f \( -name "*.ts" -o -name "*.js" -o -name "*.json" -o -name "*.md" \) | head -50`), read core files (`README.md`, `package.json`), and confirm the list with the user. *Wait for confirmation.*
+
+## 3. Draft & Review Plan
+**Trigger:** Goal and files are clear.
+*   **Plan Format (`implementation_plan_[N].md`):**
+    *   **Goal / Scope** (max 1-2 days work checklist)
+    *   **Open Questions & Success Criteria** (verifiable outcomes)
+    *   **Files to Modify & Risks**
+*   **Delivery:** Share the plan. Highlight updates via `~~old~~ → new`. **Do not proceed or commit until the user explicitly approves ("OK"/"Ready").**
+
+## 4. Save & Commit Plan
+**Trigger:** User approves the plan.
+*   **Action:** Check latest iteration index (`ls -la implementation_plan_*.md`), save to `implementation_plan_[N].md`, and automatically commit:
+    ```bash
+    git add implementation_plan_[N].md
+    git commit -m "docs(plan): implementation plan iteration [N]"
+    ```
+*   *Wait for user "proceed" confirmation before moving to execution.*
+
+## 5. Task Creation & Execution
+**Trigger:** User says "proceed/yes".
+*   **Task Format:** Define `Goal`, `Files`, and a detailed `Checklist` per task.
+*   **Execution:** Run tasks in small batches. Update progress inline.
+*   **Review:** If user approves, run: `git add . && git commit -m "feat/fix: [msg]" && git pull origin main && git push origin [branch]`. Create a Pull Request to `main`. If changes are requested, revise before committing.
+
+## 6. Finalize & Handoff
+**Trigger:** All tasks complete.
+*   **Checklist:** Verify local tests, check for broken syntax, ensure `implementation_plan_[N].md` matches final outputs, and push all commits.
+*   **Summary:** Provide the completed task checklist, active branch name, and PR link.
+
+## Rules & Triggers
+*   **Trigger Skill When:** Starting new project chats, "iteration N" is mentioned, updating code files, or when proceeding with implementation.
+*   **Do Not Trigger If:** Answering general Q&A, doing a quick single bug fix without planning, or if explicitly opted-out by the user.
+*   **Pro-Tips:** Maintain context (goal, plan, branch) throughout. If ambiguous, ask direct multiple-choice questions. Document any mid-iteration plan changes under a `## Changes from Original Plan` section.
