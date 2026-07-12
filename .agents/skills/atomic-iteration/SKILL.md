@@ -17,6 +17,8 @@ Core Workflow
 6. Execute: Create and run tasks sequentially upon approval.
 7. Finalize: Delegate to semantic-git, create summary.
 
+Details
+
 1. Branch Initialization
 - Trigger: New chat in a project.
 - Actions: Pull from main branch.
@@ -31,7 +33,7 @@ Core Workflow
 3. Draft & Review Plan
 - Trigger: Goal and reference files are clear.
 - Action: Draft implementation plan and task following the format specified.
-- Implementation Plan Format: Goal / Scope (max 1-2 days work checklist). Open Questions & Success Criteria (verifiable outcomes). Files to Modify & Risks.
+- Implementation Plan Format: Goal / Scope (max 1-2 days work checklist). Open Questions & Success Criteria (verifiable outcomes, phrased so each can become a test case if a test suite is added later). Files to Modify & Risks.
 - Task Format: Define `Goal`, `Files`, and a detailed `Checklist` per task.
 - Delivery: Share the implementation plan & task for user to review.
 - Rules: Do not proceed to do ANY file changes, until user explicitly approves the implementation plan ("OK"/"Ready")
@@ -43,9 +45,15 @@ Core Workflow
 
 5. Execution
 - Trigger: `reference/ifp/implementation_plan_[N].md` and `README.md` approved by user and finished committed locally.
-- Rules: Run tasks in small batches. Update progress inline, shortly straight to the point. When done present to user to review. Point user to the `index.html` file for manual verification.
+- Rules: Run tasks in small batches. Update progress inline, shortly straight to the point.
+- Auto-Verification (before manual review): Run `node --check` on changed `.js` files and `npx prettier . --write` for formatting. If a test suite exists, also run it against the task's Success Criteria (from step 3 plan). Only proceed to manual review once these pass — treat a failure here as an error under efficient-code's retry counter, not a separate review round.
+- When auto-verification passes: present to user to review. Point user to the index.html file for manual verification.
+- Auto-Verification (before manual review): Run syntax/lint check on changed files (e.g. `node --check file.js && npx prettier . --check`). If a test suite exists, run it against the task's Success Criteria (from step 3 plan) instead of/in addition to lint check. Only proceed to manual review once this passes, treat a failure here as an error under efficient-code's retry counter, not a separate review round.
+- When auto-verification passes: present to user to review. Point user to the `index.html` file for manual verification.
+- Context Budget: After each completed task, compress its detail into a 1-line status (e.g. `[DONE] Task 3: added filter logic`) instead of keeping full diffs/output in context. Only retain full detail for the task currently in progress and any [FAILED]/[BLOCKED] task's error log.
 - Action: If changes are requested during review, revise and represent the changes to user, until get the approval. If user approves, proceed directly to step 6.
-- Retry Scope: "Retry" applies per-task, counting failed attempts to make a single task's checklist pass (e.g. fix-and-recheck cycles), not the whole iteration. If Max Retry 3 times fails on a task: Mark that task as [FAILED] in `reference/ifp/implementation_plan_[N].md`, write the error log under "## Changes from Original Plan", and halt for user input.
+- Retry Handling: Errors during task execution are handled by "efficient-code" skill's retry counter (max 3x, single counter — not nested). If that counter is exhausted on a task: Mark that task as [FAILED] in `reference/ifp/implementation_plan_[N].md`, write the error log under "## Changes from Original Plan", and halt for user input.
+- Rollback Rule: On [FAILED], revert that task's file changes to the last committed state (`git checkout -- <files>` for the affected files only) before halting. Do not carry partial/broken code into the next task or commit. If the failure blocks dependent tasks, mark those as [BLOCKED] instead of attempting them.
 
 6. Finalize & Handoff
 - Trigger: User verifies local tests, approve execution results.

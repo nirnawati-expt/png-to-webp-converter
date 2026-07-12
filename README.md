@@ -2,7 +2,7 @@
 
 A lightweight, 100% client-side web application for converting PNG images to WebP format. Designed with a striking terminal/console-inspired aesthetic.
 
-*Note: This application was fully built and iterated upon by an AI coding assistant using [Antigravity](https://github.com/google/antigravity), powered by the **Gemini 3.1 Pro (High)** model.*
+_Note: This application was fully built and iterated upon by an AI coding assistant using [Antigravity](https://github.com/google/antigravity), powered by the **Gemini 3.1 Pro (High)** model._
 
 ## 🚀 Features
 
@@ -19,6 +19,7 @@ A lightweight, 100% client-side web application for converting PNG images to Web
 ## 🛠️ Tech Stack
 
 This project is built purely with web standards. No heavy frameworks, no build tools.
+
 - **HTML5**: Semantic structure.
 - **CSS3**: Vanilla CSS utilizing custom CSS variables, Flexbox, and CSS transitions/animations.
 - **Vanilla JavaScript**: DOM manipulation, File API, and HTML Canvas API for image processing.
@@ -38,9 +39,11 @@ This project is built purely with web standards. No heavy frameworks, no build t
 Since this is a static web application, you don't need to install any dependencies (like Node.js or Python) to run it.
 
 ### Option 1: Direct Open
+
 Simply double-click the `index.html` file to open it in your default web browser.
 
 ### Option 2: Local Web Server
+
 If you prefer running it over a local server (recommended to avoid any potential CORS issues with local files in some strict browsers), you can use Python or any simple HTTP server:
 
 ```bash
@@ -50,6 +53,7 @@ python -m http.server 8080
 # Using Node (http-server)
 npx http-server -p 8080
 ```
+
 Then navigate to `http://localhost:8080` in your browser.
 
 ## 🖼️ Design Direction
@@ -61,4 +65,5 @@ Then navigate to `http://localhost:8080` in your browser.
 - **Info/Success**: `var(--info-color)` (`#00ccff`)
 
 ## 📝 License
+
 This project is open-source and free to use for non commercial usage. see [LICENSE](/LICENSE) for details.

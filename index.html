@@ -1,79 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terminal PNG to WebP Converter</title>
-    <link rel="icon" type="image/svg+xml" sizes="any"        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💲</text></svg>"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      sizes="any"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💲</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1><span class="prompt">user@host:~$</span> ./png2webp.sh<span class="cursor">_</span></h1>
-            <p>Convert PNG to WebP locally. 100% Client-side.</p>
-        </header>
+      <header>
+        <h1>
+          <span class="prompt">user@host:~$</span> ./png2webp.sh<span
+            class="cursor"
+            >_</span
+          >
+        </h1>
+        <p>Convert PNG to WebP locally. 100% Client-side.</p>
+      </header>
 
-        <main>
-            <div class="tip-box">
-                <span class="prompt">Tip:</span> You can convert a single PNG or process in bulk (Max 50 files / 50MB).
+      <main>
+        <div class="tip-box">
+          <span class="prompt">Tip:</span> You can convert a single PNG or
+          process in bulk (Max 50 files / 50MB).
+        </div>
+
+        <div id="drop-zone" class="drop-zone">
+          <input type="file" id="file-input" accept="image/png" multiple />
+          <label for="file-input" id="drop-label">
+            [ DRAG & DROP PNGs HERE OR CLICK TO BROWSE ]
+          </label>
+        </div>
+
+        <div id="preview-section" class="preview-section hidden">
+          <div class="list-box">
+            <h2>--- SELECTED FILES ---</h2>
+            <div id="file-list" class="file-list"></div>
+            <div class="stats">
+              <span>Total Size: <span id="total-png-size">0 KB</span></span>
             </div>
+          </div>
 
-            <div id="drop-zone" class="drop-zone">
-                <input type="file" id="file-input" accept="image/png" multiple>
-                <label for="file-input" id="drop-label">
-                    [ DRAG & DROP PNGs HERE OR CLICK TO BROWSE ]
-                </label>
+          <div class="actions">
+            <button id="convert-btn" class="btn primary">
+              > CONVERT TO WEBP
+            </button>
+          </div>
+
+          <div id="result-box" class="list-box hidden">
+            <h2>--- RESULTS ---</h2>
+            <div class="stats">
+              <span
+                >Converted Size: <span id="total-webp-size">0 KB</span></span
+              >
+              <span class="reduction" id="total-reduction"></span>
             </div>
-
-            <div id="preview-section" class="preview-section hidden">
-                <div class="list-box">
-                    <h2>--- SELECTED FILES ---</h2>
-                    <div id="file-list" class="file-list"></div>
-                    <div class="stats">
-                        <span>Total Size: <span id="total-png-size">0 KB</span></span>
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button id="convert-btn" class="btn primary">> CONVERT TO WEBP</button>
-                </div>
-
-                <div id="result-box" class="list-box hidden">
-                    <h2>--- RESULTS ---</h2>
-                    <div class="stats">
-                        <span>Converted Size: <span id="total-webp-size">0 KB</span></span>
-                        <span class="reduction" id="total-reduction"></span>
-                    </div>
-                    <div class="actions">
-                        <button id="download-btn" class="btn success">> DOWNLOAD</button>
-                        <button id="refresh-btn" class="btn danger hidden">↻ START OVER</button>
-                    </div>
-                </div>
+            <div class="actions">
+              <button id="download-btn" class="btn success">> DOWNLOAD</button>
+              <button id="refresh-btn" class="btn danger hidden">
+                ↻ START OVER
+              </button>
             </div>
-        </main>
+          </div>
+        </div>
+      </main>
     </div>
-    
+
     <!-- Hidden canvas for conversion -->
-    <canvas id="canvas" style="display: none;"></canvas>
+    <canvas id="canvas" style="display: none"></canvas>
 
     <!-- Error Modal Popup -->
     <div id="error-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="prompt">system@error:~$</span> LIMIT_EXCEEDED
-            </div>
-            <div id="modal-message" class="modal-body error-text"></div>
-            <div class="modal-actions">
-                <button id="modal-ok-btn" class="btn primary">> ACKNOWLEDGE</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="prompt">system@error:~$</span> LIMIT_EXCEEDED
         </div>
+        <div id="modal-message" class="modal-body error-text"></div>
+        <div class="modal-actions">
+          <button id="modal-ok-btn" class="btn primary">> ACKNOWLEDGE</button>
+        </div>
+      </div>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
