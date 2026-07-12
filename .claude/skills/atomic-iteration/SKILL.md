@@ -26,7 +26,7 @@ Core Workflow
 - Action: If goals and files are unclear, ask user for clues.
 - Goal: Ask for a 1-2 sentence main goal if unclear.
 - Files: Ask for target files. If user doesn't know, scan project using: `find . -type f \( -name "*.ts" -o -name "*.js" -o -name "*.json" -o -name "*.md" \) -not -path "*/node_modules/*" -not -path "*/dist/*" | head -30`, read core files (`README.md`, `reference/ifp/implementation_plan_[N].md`), and confirm the list with the user.
-- State Persistence: Read the `evaluation_[N-1].md` from the previous iteration (if any) to prevent regression and reuse previous architecture decisions.
+- State Persistence: Read the `reference/ee/evaluation_[N-1].md` from the previous iteration (if any) to prevent regression and reuse previous architecture decisions.
 
 3. Draft & Review Plan
 - Trigger: Goal and reference files are clear.
@@ -45,7 +45,7 @@ Core Workflow
 - Trigger: `reference/ifp/implementation_plan_[N].md` and `README.md` approved by user and finished committed locally.
 - Rules: Run tasks in small batches. Update progress inline, shortly straight to the point. When done present to user to review. Point user to the `index.html` file for manual verification.
 - Action: If changes are requested during review, revise and represent the changes to user, until get the approval. If user approves, proceed directly to step 6.
-- If Max Retry 3 times fails: Mark the current task as [FAILED] in reference/ifp/implementation_plan_[N].md, write the error log under "## Changes from Original Plan", and halt for user input.
+- If Max Retry 3 times fails: Mark the current task as [FAILED] in `reference/ifp/implementation_plan_[N].md`, write the error log under "## Changes from Original Plan", and halt for user input.
 
 6. Finalize & Handoff
 - Trigger: User verifies local tests, approve execution results.
