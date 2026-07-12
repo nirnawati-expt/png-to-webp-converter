@@ -3,43 +3,33 @@ name: efficient-code
 description: Automatically apply token-efficient refactoring. 
 ---
 
-# Efficient Code
+Apply when editing programming files within this project.
 
-Keep code lean without losing clarity. Apply when editing programming files.
+Project Guide:
+- The Tech Stack: HTML, Vanilla JS, CSS
+- The Style Guide: Terminal Style
 
-## Core Refactor Rules
+Error Handling Rules: If runtime/console errors occur or syntax checks fail, read the stack trace and auto-fix. Max Retry 3 times. Report if still fail after retries.
 
-1. YAGNI & DRY: Delete if unnecessary; reuse if it exists.
-2. Platform First: Use stdlib, native features, or installed deps in that order.
-3. Keep It Simple: Use one-liners where possible.
-4. Clean up: Remove inline comments, unused variables/imports, and redundant logic.
-
-## Shortening Rules
-
-- Names: Keep under 15 chars and unambiguous (`userData` instead of `currentUserData`).
-- Explanations: Compress to single-sentence intent; no verbose text.
+Coding Rules:
+- YAGNI & DRY: Delete if unnecessary; reuse if it exists.
+- Platform First: Use stdlib, native features, or installed deps in that order.
+- Keep It Simple: Use one-liners where possible.
+- Clean up: Remove inline comments, unused variables/imports, and redundant logic.
+- Naming: Keep under 15 chars and unambiguous (e.g. `userData` instead of `currentUserData`).
+- Explanations: Compress to single-sentence intent;
 - Do Not Touch: Function signatures, error handling, validation, and security logic.
 
-## Output Format
-
-```text
-[FILE: path/to/file.ext]
-
-[CHANGES]
-- Removed: [X] comments, unused [variables/imports]
-- Renamed: `oldName` → `newName`
-- Compressed: [logic description] from [X] lines → [Y]
-- Deleted: [redundant code]
-
-{ repeat again with format above if multiple files }
+Report Rules
+```
+[FILE: path/to/file.ext] 
+- Message (e.g. Removed: [X] comments, unused [variables/imports])
  
 Open file in editor review pane to see full diff.
 ```
 
-## When NOT to Compress
- 
+Exception: 
 - User explicitly wants verbose code ("keep it readable")
 - Security/auth logic (leave it crystal clear)
 - Novel algorithms (readability > brevity)
-- Team style guide says otherwise
 - First-time learning code (keep examples clean)
