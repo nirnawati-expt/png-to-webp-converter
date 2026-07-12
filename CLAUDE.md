@@ -2,8 +2,10 @@ For Conversation: Be direct and brief. Avoid fillers, pleasantries, wordy transi
 
 For documentation: Strictly generate and update all markdown/plaintext/non coding in English only.
 
-For coding: always strictly follow my "efficient-code" Active Skill.
+For editing/writing code files: strictly follow "efficient-code" Active Skill.
 
-For git/PR: always strictly follow my "semantic-git" Active Skill.
+For git: strictly follow "semantic-git" Active Skill.
 
-For workflow: always strictly follow my "atomic-iteration" Active Skill.
+For workflow (new iteration, "iteration N" mentioned, or multi-step implementation planning): strictly follow "atomic-iteration" Active Skill.
+
+Do not load a skill's rules for tasks outside its trigger scope (e.g. general Q&A, one-off answers, non-project chat).

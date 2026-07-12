@@ -23,9 +23,9 @@ Core Workflow
 
 2. Gather Context & Goal
 - Trigger: Branch is ready.
-- Action: If goals and files are unclear, ask user for clues.
-- Goal: Ask for a 1-2 sentence main goal if unclear.
-- Files: Ask for target files. If user doesn't know, scan project using: `find . -type f \( -name "*.ts" -o -name "*.js" -o -name "*.json" -o -name "*.md" \) -not -path "*/node_modules/*" -not -path "*/dist/*" | head -30`, read core files (`README.md`, `reference/ifp/implementation_plan_[N].md`), and confirm the list with the user.
+- Action: Ask the user only if goal or files are not inferable from the conversation or project files. If the user's request already states the goal and/or target files clearly, skip asking and proceed directly.
+- Goal: If unclear, ask for a 1-2 sentence main goal.
+- Files: If unclear, ask for target files. If user doesn't know, scan project using: `find . -type f \( -name "*.ts" -o -name "*.js" -o -name "*.json" -o -name "*.md" \) -not -path "*/node_modules/*" -not -path "*/dist/*" | head -30`, read core files (`README.md`, `reference/ifp/implementation_plan_[N].md`), and confirm the list with the user.
 - State Persistence: Read the `reference/ee/evaluation_[N-1].md` from the previous iteration (if any) to prevent regression and reuse previous architecture decisions.
 
 3. Draft & Review Plan
@@ -33,19 +33,19 @@ Core Workflow
 - Action: Draft implementation plan and task following the format specified.
 - Implementation Plan Format: Goal / Scope (max 1-2 days work checklist). Open Questions & Success Criteria (verifiable outcomes). Files to Modify & Risks.
 - Task Format: Define `Goal`, `Files`, and a detailed `Checklist` per task.
-- Delivery: Share the implementation plan & task for user to review. 
+- Delivery: Share the implementation plan & task for user to review.
 - Rules: Do not proceed to do ANY file changes, until user explicitly approves the implementation plan ("OK"/"Ready")
 
 4. Save & Commit Plan
 - Trigger: User approves the plan.
-- Action: Check latest iteration index (`ls -la reference/ifp/implementation_plan_*.md`), save to `reference/ifp/implementation_plan_[N].md`. Update `README.md` focusing only on the new features. 
+- Action: Check latest iteration index (`ls -la reference/ifp/implementation_plan_*.md`), save to `reference/ifp/implementation_plan_[N].md`. Update `README.md` focusing only on the new features.
 - Rules: Present only the modified lines of README using standard git diff format (max 15 lines snippet). Wait for user approval before committing locally. DO NOT START CODING UNTIL COMMITTED.
 
 5. Execution
 - Trigger: `reference/ifp/implementation_plan_[N].md` and `README.md` approved by user and finished committed locally.
 - Rules: Run tasks in small batches. Update progress inline, shortly straight to the point. When done present to user to review. Point user to the `index.html` file for manual verification.
 - Action: If changes are requested during review, revise and represent the changes to user, until get the approval. If user approves, proceed directly to step 6.
-- If Max Retry 3 times fails: Mark the current task as [FAILED] in `reference/ifp/implementation_plan_[N].md`, write the error log under "## Changes from Original Plan", and halt for user input.
+- Retry Scope: "Retry" applies per-task, counting failed attempts to make a single task's checklist pass (e.g. fix-and-recheck cycles), not the whole iteration. If Max Retry 3 times fails on a task: Mark that task as [FAILED] in `reference/ifp/implementation_plan_[N].md`, write the error log under "## Changes from Original Plan", and halt for user input.
 
 6. Finalize & Handoff
 - Trigger: User verifies local tests, approve execution results.

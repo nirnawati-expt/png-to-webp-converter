@@ -1,6 +1,6 @@
 ---
 name: efficient-code
-description: Automatically apply token-efficient refactoring. 
+description: Automatically apply token-efficient refactoring.
 ---
 
 Apply when editing programming files within this project.
@@ -16,19 +16,20 @@ Coding Rules:
 - Platform First: Use stdlib, native features, or installed deps in that order.
 - Keep It Simple: Use one-liners where possible.
 - Clean up: Remove inline comments, unused variables/imports, and redundant logic.
-- Naming: Keep under 15 chars and unambiguous (e.g. `userData` instead of `currentUserData`).
-- Explanations: Compress to single-sentence intent;
-- Do Not Touch: Function signatures, error handling, validation, and security logic.
+- Naming: For new identifiers only, keep under 15 chars and unambiguous (e.g. `userData` instead of `currentUserData`). Do not rename existing identifiers solely for length — that falls under "Do Not Touch" below.
+- Explanations: Compress to single-sentence intent.
+- Do Not Touch: Function signatures (including existing names), error handling, validation, and security logic.
 
-Report Rules
+Report Rules (use this exact template after every file edit)
 ```
-[FILE: path/to/file.ext] 
-- Message (e.g. Removed: [X] comments, unused [variables/imports])
- 
+[FILE: path/to/file.ext]
+- Removed: N comments, N unused vars/imports
+- Simplified: <short description, omit if none>
+
 Open file in editor review pane to see full diff.
 ```
 
-Exception: 
+Exception (skip the rules above when):
 - User explicitly wants verbose code ("keep it readable")
 - Security/auth logic (leave it crystal clear)
 - Novel algorithms (readability > brevity)
