@@ -1,0 +1,1 @@
+See @.agents/INSTRUCTIONS.md for full project instructions.

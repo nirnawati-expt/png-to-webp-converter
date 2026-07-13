@@ -9,8 +9,8 @@ When NOT to Use: When the user provides a specific exact commit message, request
 
 Core Workflow
 - Commit: Generate semantic message and create commit.
-- Safe Pull: Run `git status --porcelain` before pulling. If the local working directory is not clean, stash or commit changes first to prevent accidental overwrites.
-- Pull & Check: Pull from `main` and detect merge conflicts.
+- Safe Pull: Run `git status --porcelain` before pulling. If the local working directory is not clean, halt, report the changed files, and request direction; never stash or commit existing work without explicit user approval.
+- Pull & Check: After user confirmation, pull from `main` and detect merge conflicts.
 - Push & PR: If clean, push and generate PR; if conflicted, halt and report.
 
 Auto-Detection (Priority Order)
