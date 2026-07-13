@@ -8,11 +8,22 @@ Skill Rules & Triggers
 - Do Not Trigger If: Answering general Q&A, doing a quick single bug fix without planning, starting a project chat without implementation work, or if explicitly opted-out by the user.
 - Pro-Tips: Maintain context (goal, plan, state, branch) throughout. If ambiguous, ask direct multiple-choice questions. Record changed circumstances in STATE.
 
+Project structure: skills, instructions, references
+```
+.agents/
+├── STATE.md
+├── INSTRUCTIONS.md
+├── skills/<skill-name>/SKILL_[n].md
+└── reference/
+    ├── ifp/implementation_plan_[N].md
+    └── ee/evaluation_[N].md
+```
+
 State Contract
 - `.agents/STATE.md` is the mutable pointer for the current iteration; the user message overrides it if they conflict.
 - The approved `reference/ifp/implementation_plan_[N].md` is immutable. Record changed circumstances only in STATE; do not rewrite or annotate the approved plan.
 - Before implementation work, read STATE. Update it only after a task completion, status transition, decision, blocker, verification result, or handoff.
-- Only the active implementation agent writes STATE. Commit state updates with the related plan or task changes; do not create empty progress-only commits.
+- Only the active implementation agent writes STATE. Commit state updates via "semantic-git" in Commit-Only Mode, bundled with the related plan or task changes; do not create empty progress-only commits.
 - Required fields: Status, Iteration, Plan, Branch, Current task, Completed, Failed, Next action, Decisions, Blockers, Verification, and Updated.
 
 Core Workflow
@@ -49,14 +60,14 @@ Details
 4. Save Plan & Initialize State
 - Trigger: User approves the plan.
 - Action: Check latest iteration index (`ls -la reference/ifp/implementation_plan_*.md`), save to `reference/ifp/implementation_plan_[N].md`, and update `README.md` focusing only on the new features. Initialize `.agents/STATE.md` with `Status: planned`, the iteration number, plan path, branch, first task, next action, and timestamp.
-- Rules: After approval, do not edit the implementation plan. Present only the modified lines of README using standard git diff format (max 15 lines snippet). Wait for user approval before versioning the plan and initialized state through `semantic-git`. DO NOT START CODING UNTIL THE PLAN AND STATE ARE COMMITTED.
+- Rules: After approval, do not edit the implementation plan. Present only the modified lines of README using standard git diff format (max 15 lines snippet). Wait for user approval, then commit README.md, implementation_plan_[N].md, and STATE.md together in a single "planning" commit via "semantic-git" in Commit-Only Mode. DO NOT START CODING UNTIL THE PLAN, README AND STATE ARE COMMITTED.
 
 5. Execution
 - Trigger: The approved plan and initialized state are committed locally.
 - Rules: Before each task batch, read STATE and confirm the current task matches the immutable plan. Run tasks in small batches and update STATE after every required state transition.
 - Auto-Format: Run `npx prettier --write` only on changed, supported files before verification.
-- Auto-Verification (before manual review): Run `node --check` on changed `.js` files and `npx prettier --check` on changed, supported files. If a test suite exists, also run it against the task's Success Criteria (from step 3 plan). Only proceed to manual review once these pass. Treat a failure here as an error under efficient-code's retry counter, not a separate review round.
-- State Updates: On success, append the task to Completed, set the next task and Next action, and record verification. On a decision, add a concise Decision. On a failure, set Status to `blocked`, record the blocker and error summary, and preserve the worktree.
+- Auto-Verification (before manual review): Run `node --check` on changed `.js` files and `npx prettier --check` on changed, supported files. If a test suite exists, also run it against the task's Success Criteria (from step 3 plan). Only proceed to manual review once these pass. Treat a failure here as an error under `efficient-code`'s retry counter, not a separate review round.
+- State Updates: On success, append the task to Completed, set the next task and Next action, and record verification, then commit the task changes and STATE update together via "semantic-git" in Commit-Only Mode. On a decision, add a concise Decision. On a failure, set Status to `blocked`, record the blocker and error summary, and preserve the worktree (do not commit a failed task).
 - When auto-verification passes: set Status to `review`, present to user to review, and point user to the `index.html` file for manual verification.
 - Context Budget: After each completed task, compress its detail into a 1-line status (e.g. `[DONE] Task 3: added filter logic`) instead of keeping full diffs/output in context. Only retain full detail for the task currently in progress and any [FAILED]/[BLOCKED] task's error log.
 - Action: If changes are requested during review, set Status to `in_progress`, revise, and represent the changes to user until approval. If the user approves, proceed directly to step 6.
@@ -65,7 +76,7 @@ Details
 
 6. Handoff
 - Trigger: User verifies local tests and approves execution results.
-- Action: Set STATE to `complete`, record the final verification and next action, then delegate the entire commit, push, and PR process to the "semantic-git" skill. Do not commit directly in this step; semantic-git owns commit ownership end to end.
+- Action: Set `STATE.md` Status to `complete`, record the final verification and next action, then delegate the entire commit, push, and PR process to the "semantic-git" skill (full Core Workflow, not Commit-Only Mode).
 - Output: Summarize the completed task checklist, active branch name, and PR link.
 
 7. Evaluation

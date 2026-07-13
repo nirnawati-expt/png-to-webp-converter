@@ -12,12 +12,13 @@ For implementation execution: read `.agents/STATE.md` before task work when it e
 
 Do not load a skill's rules for tasks outside its trigger scope (e.g. general Q&A, one-off answers, non-project chat).
 
-Below is the single source of truth for active skill version. Resolve here before loading any skill from `.agents/skills`, never assume the newest `SKILL_[n].md` in a folder is active.
+
+Below is the single source of truth for active skill version. Resolve here before loading any skill from `.agents/skills`, never assume the newest `SKILL_[n].md` in skill's folder is active.
 
 | Skill | Active File |
 |---|---|
 | atomic-iteration | `.agents/skills/atomic-iteration/SKILL_2.md` |
-| efficient-code | `.agents/skills/efficient-code/SKILL.md` |
+| efficient-code | `.agents/skills/efficient-code/SKILL_0.md` |
 | semantic-git | `.agents/skills/semantic-git/SKILL_1.md` |
 | skill-evolution | `.agents/skills/skill-evolution/SKILL_1.md` |
 
