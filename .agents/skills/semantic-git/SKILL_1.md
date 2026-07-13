@@ -3,9 +3,14 @@ name: semantic-git
 description: Automatically generate semantic commits and structured PR descriptions (What/Why/Testing/Breaking Changes) based on changed files. Triggers on 'commit', 'create PR', 'push', etc.
 ---
 
-When to Use: When the user asks to "commit", "push", "create PR", or when code changes are ready for versioning with an automated, structured description.
+When to Use: When the user asks to "commit", "push", "create PR", or when code changes are ready for versioning with an automated, structured description. Also called by atomic-iteration for per-task local commits during Execution (see Commit-Only Mode).
 
 When NOT to Use: When the user provides a specific exact commit message, requests a non-standard format, makes temporary/throwaway commits ("WIP", "temp"), or if the repository already has existing merge conflicts.
+
+Commit-Only Mode
+- Trigger: Called mid-iteration (e.g. atomic-iteration step 4 or step 5) to commit plan, state, or task changes locally.
+- Action: Generate semantic message, create commit. Do not pull, push, or generate a PR in this mode, regardless of the full workflow below.
+- Use the full Core Workflow (commit through PR) only for step 6 Handoff or an explicit user request to push/create a PR.
 
 Core Workflow
 - Commit: Generate semantic message and create commit.

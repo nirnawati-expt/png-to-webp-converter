@@ -10,6 +10,7 @@ Project Guide:
 - The Style Guide: Terminal Style
 
 Error Handling Rules: If runtime/console errors occur or syntax checks fail, read the stack trace and auto-fix. Max Retry 3 times. This is the single retry counter, "atomic-iteration" skill's task execution defers to this counter and does not run a separate one. Report if still fail after retries.
+Retry Handoff: On 3rd failure, return error summary + flag retriesExhausted=true. Caller (atomic-iteration) receives this and marks task [FAILED].
 
 Coding Rules:
 - YAGNI & DRY: Delete if unnecessary; reuse if it exists.
