@@ -1,0 +1,3 @@
+- Reviewed instruction-to-skill integration.
+- Found overlapping workflow triggers and unsafe automatic Git actions.
+- Approved versioned updates narrow the atomic trigger, preserve dirty worktrees, scope formatting, and centralize versioning in semantic-git.

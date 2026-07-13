@@ -14,9 +14,9 @@ Below is the single source of truth for active skill version. Resolve here befor
 
 | Skill | Active File |
 |---|---|
-| atomic-iteration | `.agents/skills/atomic-iteration/SKILL.md` |
+| atomic-iteration | `.agents/skills/atomic-iteration/SKILL_1.md` |
 | efficient-code | `.agents/skills/efficient-code/SKILL.md` |
-| semantic-git | `.agents/skills/semantic-git/SKILL.md` |
-| skill-evolution | `.agents/skills/skill-evolution/SKILL.md` |
+| semantic-git | `.agents/skills/semantic-git/SKILL_1.md` |
+| skill-evolution | `.agents/skills/skill-evolution/SKILL_1.md` |
 
 Only "skill-evolution" may edit this table, only after user approval of a new version.
