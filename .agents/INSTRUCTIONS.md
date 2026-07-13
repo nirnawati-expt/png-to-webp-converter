@@ -8,13 +8,15 @@ For git/PR (commit, push, create PR, or versioning tasks): strictly follow "sema
 
 For workflow (new iteration, "iteration N" mentioned, or multi-step implementation planning): strictly follow "atomic-iteration" Active Skill.
 
+For implementation execution: read `.agents/STATE.md` before task work when it exists. STATE is the mutable pointer for the current iteration; the approved implementation plan is immutable, and user instructions override STATE when they conflict.
+
 Do not load a skill's rules for tasks outside its trigger scope (e.g. general Q&A, one-off answers, non-project chat).
 
 Below is the single source of truth for active skill version. Resolve here before loading any skill from `.agents/skills`, never assume the newest `SKILL_[n].md` in a folder is active.
 
 | Skill | Active File |
 |---|---|
-| atomic-iteration | `.agents/skills/atomic-iteration/SKILL_1.md` |
+| atomic-iteration | `.agents/skills/atomic-iteration/SKILL_2.md` |
 | efficient-code | `.agents/skills/efficient-code/SKILL.md` |
 | semantic-git | `.agents/skills/semantic-git/SKILL_1.md` |
 | skill-evolution | `.agents/skills/skill-evolution/SKILL_1.md` |

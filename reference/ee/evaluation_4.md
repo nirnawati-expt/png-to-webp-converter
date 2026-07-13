@@ -1,0 +1,3 @@
+- Approved a persistent iteration-state pointer.
+- Added an idle shared state file and state-aware atomic workflow.
+- The implementation plan remains immutable after approval; state records only current progress, decisions, blockers, and verification.
