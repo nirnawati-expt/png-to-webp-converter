@@ -11,6 +11,14 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "build:pack-windows": "npm run build && cd dist && tar -caf ../build-png2webp.zip * & cd .",
+    "build:pack": "npm run build && cd dist && zip -r ../build-png2webp.zip . & cd .",
+    "dev":"cd src && npx serve",
+    "stage":"npm run build && cd dist && npx serve"
+  },
+  "devDependencies": {
+    "vite": "^8.1.5"
   }
 }
