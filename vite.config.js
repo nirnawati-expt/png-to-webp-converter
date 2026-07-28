@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
   let folder = "dist";
   let target = "es2020";
 
-  const external = ['src/background.js']; // exclude background.js from build result if not building for browser extension
+  const external = [rootSource + '/background.js']; // exclude background.js from build result if not building for browser extension
   const input = {
     main: resolve(__dirname, rootSource + '/index.html'),
   };
@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
     default:
   }
 
-  const root = './src';
+  const root = './' + rootSource;
   const emptyOutDir = true;
   const outDir = "../" + folder;
   const minify = true;
