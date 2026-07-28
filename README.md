@@ -18,7 +18,7 @@ _Note: Up to tag [1.0.0](https://github.com/nirnawati-expt/png-to-webp-converter
 
 ## 🛠️ Tech Stack
 
-This project is built purely with web standards. No heavy frameworks, no build tools.
+This project is built purely with web standards. No heavy frameworks.
 
 - **HTML5**: Semantic structure.
 - **CSS3**: Vanilla CSS utilizing custom CSS variables, Flexbox, and CSS transitions/animations.
