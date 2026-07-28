@@ -2,7 +2,7 @@
 
 A lightweight, 100% client-side web application for converting PNG images to WebP format. Designed with a striking terminal/console-inspired aesthetic.
 
-_Note: This application was fully built and iterated upon by an AI coding assistant using [Antigravity](https://github.com/google/antigravity), powered by the **Gemini 3.1 Pro (High)** model._
+_Note: Up to tag [1.0.0](https://github.com/nirnawati-expt/png-to-webp-converter/releases/tag/1.0.0) this application was fully built and iterated on by an AI coding assistant using [Antigravity](https://github.com/google/antigravity), powered by the **Gemini 3.1 Pro (High)** model_
 
 ## 🚀 Features
 
@@ -23,8 +23,9 @@ This project is built purely with web standards. No heavy frameworks, no build t
 - **HTML5**: Semantic structure.
 - **CSS3**: Vanilla CSS utilizing custom CSS variables, Flexbox, and CSS transitions/animations.
 - **Vanilla JavaScript**: DOM manipulation, File API, and HTML Canvas API for image processing.
-- **JSZip (CDN)**: Utilized solely for creating ZIP archives when downloading bulk conversions.
+- **JSZip**: Utilized solely for creating ZIP archives when downloading bulk conversions.
 - **Google Fonts**: Uses `JetBrains Mono` for that authentic coding aesthetic.
+- **Vite**: Uses vite for dev server & build tool.
 
 ## ⚙️ How It Works
 
@@ -36,22 +37,35 @@ This project is built purely with web standards. No heavy frameworks, no build t
 
 ## 💻 Getting Started
 
-Since this is a static web application, you don't need to install any dependencies (like Node.js or Python) to run it.
-
 ### Option 1: Direct Open
 
-Simply double-click the `index.html` file to open it in your default web browser.
+Simply double-click the `index.html` file in `/static` folder to open it in your default web browser. It is working offline. You only need browser.
 
 ### Option 2: Local Web Server
 
-If you prefer running it over a local server (recommended to avoid any potential CORS issues with local files in some strict browsers), you can use Python or any simple HTTP server:
+If you prefer running it over a local server (recommended to avoid any potential CORS issues with local files in some strict browsers), you can use Python or any simple HTTP server from the `/src` directory.
+
+To use this option, you should install either Node.js or Python on your device before running one of the commands below.
+
+#### Using Python
 
 ```bash
-# Using Python 3
+# Using Python 3. Run from the /static directory:
 python -m http.server 8080
+```
 
-# Using Node (http-server)
+#### Using Node JS (http-server)
+
+```bash
+# Using Node.js with http-server (assumes global installation). Run from /static directory:
 npx http-server -p 8080
+```
+
+#### Using Node JS (npm)
+```bash
+# Using Node JS (npm). Run from the project root directory:
+npm install # run only on the first setup
+npm run dev
 ```
 
 Then navigate to `http://localhost:8080` in your browser.
