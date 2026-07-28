@@ -15,10 +15,12 @@
     "build": "vite build",
     "build:pack-windows": "npm run build && cd dist && tar -caf ../build-png2webp.zip * & cd .",
     "build:pack": "npm run build && cd dist && zip -r ../build-png2webp.zip . & cd .",
-    "dev":"cd src && npx serve",
-    "stage":"npm run build && cd dist && npx serve"
+    "dev": "npm run build && vite preview"
   },
   "devDependencies": {
     "vite": "^8.1.5"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
   }
 }

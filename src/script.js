@@ -1,3 +1,5 @@
+import JSZip from "jszip";
+
 document.addEventListener("DOMContentLoaded", () => {
   const dropZone = document.getElementById("drop-zone");
   const fileInput = document.getElementById("file-input");
