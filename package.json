@@ -1,0 +1,16 @@
+{
+  "name": "png-to-webp-converter",
+  "version": "1.0.0",
+  "description": "A lightweight, 100% client-side web application for converting PNG images to WebP format. Designed with a striking terminal/console-inspired aesthetic.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-2:nirnawati-expt/png-to-webp-converter.git"
+  },
+  "license": "ISC",
+  "author": "noviirnawati.work@gmail.com",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
