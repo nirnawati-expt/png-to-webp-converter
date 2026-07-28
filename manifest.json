@@ -3,13 +3,5 @@
   "name": "png2webp.sh - Free PNG to WebP Converter",
   "description": "A lightweight, 100% client-side browser extension for converting PNG images to WebP format. Designed with a striking terminal/console-inspired aesthetic.",
   "version": "1.0",
-  "permissions": ["tabs"],
-  "action": {
-  },
-  "web_accessible_resources": [
-    {
-      "resources": ["index.html"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  "permissions": ["tabs"]
 }
