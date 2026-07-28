@@ -14,16 +14,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
     "build:static": "vite build --mode static",
+    "build:chrome-ext": "vite build --mode chrome-ext",
     "dev": "npm run build && vite preview --port 8080",
     "dev:static": "npm run build:static && cd static && npx serve -l 8080",
     "pack:windows": "npm run build && cd dist && tar -caf ../build-png2webp.zip * & cd .",
     "pack": "npm run build && cd dist && zip -r ../build-png2webp.zip . & cd ."
   },
   "devDependencies": {
+    "@crxjs/vite-plugin": "^2.7.1",
     "vite": "^8.1.5",
     "vite-plugin-singlefile": "^2.3.3"
   },
   "dependencies": {
-    "jszip": "^3.10.1"
+    "jszip": "^3.10.1",
+    "webextension-polyfill": "^0.12.0"
   }
 }
