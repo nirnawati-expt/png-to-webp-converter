@@ -15,6 +15,8 @@
     "build": "vite build",
     "build:static": "vite build --mode static",
     "build:chrome-ext": "vite build --mode chrome-ext",
+    "build:mozilla-ext": "vite build --mode mozilla-ext",
+    "build:ext": "npm run build:chrome-ext && npm run build:mozilla-ext",
     "dev": "npm run build && vite preview --port 8080",
     "dev:static": "npm run build:static && cd static && npx serve -l 8080",
     "pack:windows": "npm run build && cd dist && tar -caf ../build-png2webp.zip * & cd .",

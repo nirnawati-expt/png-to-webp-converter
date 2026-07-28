@@ -1,0 +1,13 @@
+{
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@png2webp-offline-converter",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
