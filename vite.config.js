@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       main: resolve(__dirname, rootSource + '/index.html'),
     }
   };
-  let assetsInlineLimit = 4096;
+  let assetsInlineLimit = 0; // all assets is moved to ${outDir}/assets
 
   switch (mode) {
     case "static":
