@@ -4,3 +4,7 @@
 .cursorrules
 .cursor
 main.mdc
+/node_modules
+/dist*
+/static
+package-lock.json

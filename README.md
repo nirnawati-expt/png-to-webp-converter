@@ -27,6 +27,10 @@ This project is built purely with web standards. No heavy frameworks.
 - **Google Fonts**: Uses `JetBrains Mono` for that authentic coding aesthetic.
 - **Vite**: Uses vite for dev server & build tool.
 
+Many implementation details were intentionally chosen to support the project’s goals of being lightweight, local-first, and privacy-friendly.
+
+The rationale behind these decisions including architecture, build strategy, dependency selection, and trade-offs is documented in the [Engineering Notes](README_engineering-notes)
+
 ## ⚙️ How It Works
 
 1. The application uses the `FileReader` API to read the uploaded PNG files locally.
@@ -62,6 +66,7 @@ npx http-server -p 8080
 ```
 
 #### Using Node JS (npm)
+
 ```bash
 # Using Node JS (npm). Run from the project root directory:
 npm install # run only on the first setup
@@ -69,6 +74,41 @@ npm run dev
 ```
 
 Then navigate to `http://localhost:8080` in your browser.
+
+### Option 3: Browser Extension
+
+Run the tool directly in your browser as a local extension.
+
+#### Download from Marketplace
+
+- **Mozilla Firefox:** _In progress (link coming soon)_
+- **Google Chrome:** _In progress (link coming soon)_
+
+#### Local Installation (Build from Source)
+
+**Prerequisites:** Requires **Node.js** installed on your system.
+
+1. **Install dependencies** (first-time setup only):
+
+```bash
+npm install
+
+```
+
+2. **Build the extension** for your target browser:
+
+```bash
+# Build for Mozilla Firefox (output: dist_mozilla)
+npm run build:mozilla-ext
+
+# Build for Google Chrome (output: dist_chrome)
+npm run build:chrome-ext
+```
+
+3. **Load into browser:**
+
+- **Chrome:** Go to `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and select the `dist_chrome` folder.
+- **Firefox:** Go to `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on...**, and select any file inside `dist_mozilla`.
 
 ## 🖼️ Design Direction
 

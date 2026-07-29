@@ -1,6 +1,6 @@
 {
   "name": "png-to-webp-converter",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A lightweight, 100% client-side web application for converting PNG images to WebP format. Designed with a striking terminal/console-inspired aesthetic.",
   "repository": {
     "type": "git",
@@ -14,6 +14,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
     "build:static": "vite build --mode static",
+    "build:chrome-ext": "vite build --mode chrome-ext",
+    "build:mozilla-ext": "vite build --mode mozilla-ext",
+    "build:ext": "npm run build:chrome-ext && npm run build:mozilla-ext",
     "dev": "npm run build && vite preview --port 8080",
     "dev:static": "npm run build:static && cd static && npx serve -l 8080",
     "pack:windows": "npm run build && cd dist && tar -caf ../build-png2webp.zip * & cd .",
@@ -21,7 +24,8 @@
   },
   "devDependencies": {
     "vite": "^8.1.5",
-    "vite-plugin-singlefile": "^2.3.3"
+    "vite-plugin-singlefile": "^2.3.3",
+    "vite-plugin-static-copy": "^4.1.1"
   },
   "dependencies": {
     "jszip": "^3.10.1"
