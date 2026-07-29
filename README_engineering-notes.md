@@ -62,6 +62,12 @@ Given the small scope of the utility, the JavaScript codebase was intentionally 
 
 The goal was long-term maintainability rather than simply making the application work.
 
+## Testing Strategy
+
+- **Pragmatic Testing Approach:** Given the utility's compact scope (main script consist around 300 lines of code, composed mostly boilerplate DOM bindings, and formatting), formal unit tests were intentionally omitted. Setting up a testing framework and DOM mocking environment would introduce disproportionate dependency overhead for minimal architectural gain.
+- **Direct Functional Testing:** Immediate end-to-end testing directly in the browser provides a more reliable verification for DOM, Canvas, and file processing logic without added complexity.
+- **Future Scalability:** If the codebase expands or introduces complex, decoupled business logic, a dedicated unit/integration test suite will be integrated to maintain reliability.
+
 ## Offline-first
 
 - [x] External CDN assets were intentionally removed.
