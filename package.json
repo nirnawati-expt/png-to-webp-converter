@@ -23,7 +23,6 @@
     "pack": "npm run build && cd dist && zip -r ../build-png2webp.zip . & cd ."
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "^2.7.1",
     "vite": "^8.1.5",
     "vite-plugin-singlefile": "^2.3.3",
     "vite-plugin-static-copy": "^4.1.1"
