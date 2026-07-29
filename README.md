@@ -62,6 +62,7 @@ npx http-server -p 8080
 ```
 
 #### Using Node JS (npm)
+
 ```bash
 # Using Node JS (npm). Run from the project root directory:
 npm install # run only on the first setup
