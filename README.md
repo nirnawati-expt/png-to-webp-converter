@@ -27,6 +27,10 @@ This project is built purely with web standards. No heavy frameworks.
 - **Google Fonts**: Uses `JetBrains Mono` for that authentic coding aesthetic.
 - **Vite**: Uses vite for dev server & build tool.
 
+Many implementation details were intentionally chosen to support the project’s goals of being lightweight, local-first, and privacy-friendly.
+
+The rationale behind these decisions including architecture, build strategy, dependency selection, and trade-offs is documented in the [Engineering Notes](README_engineering-notes)
+
 ## ⚙️ How It Works
 
 1. The application uses the `FileReader` API to read the uploaded PNG files locally.
